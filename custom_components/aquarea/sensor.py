@@ -235,10 +235,22 @@ class OutdoorTemperatureSensor(AquareaBaseEntity, SensorEntity):
     @callback
     def _handle_coordinator_update(self) -> None:
         """Handle updated data from the coordinator."""
+
+        device = self.coordinator.device
+        dev_info = getattr(device, "device_info", None)
+
+        device_name = (
+            getattr(device, "name", None)
+            or (getattr(dev_info, "name", None) if dev_info is not None else None)
+            or getattr(device, "long_id", None)
+            or (getattr(dev_info, "long_id", None) if dev_info is not None else None)
+            or "Aquarea heat pump"
+        )
+
         _LOGGER.debug(
             "Updating sensor '%s' of %s",
             "outdoor_temperature",
-            self.coordinator.device.name,
+            device_name,
         )
 
         self._attr_native_value = self.coordinator.device.temperature_outdoor
@@ -306,10 +318,20 @@ class EnergyAccumulatedConsumptionSensor(
     @callback
     def _handle_coordinator_update(self) -> None:
         """Handle updated data from the coordinator."""
+        device = self.coordinator.device
+        dev_info = getattr(device, "device_info", None)
+
+        device_name = (
+            getattr(device, "name", None)
+            or (getattr(dev_info, "name", None) if dev_info is not None else None)
+            or getattr(device, "long_id", None)
+            or (getattr(dev_info, "long_id", None) if dev_info is not None else None)
+            or "Aquarea heat pump"
+        )
         _LOGGER.debug(
             "Updating sensor '%s' of %s",
             self.unique_id,
-            self.coordinator.device.name,
+            device_name,
         )
 
         # we need to check the value for the current hour. If the device returns None means that we don't have yet data for the current hour. However the device might still update the previous hour data.
@@ -421,10 +443,20 @@ class EnergyConsumptionSensor(AquareaBaseEntity, SensorEntity, RestoreEntity):
     @callback
     def _handle_coordinator_update(self) -> None:
         """Handle updated data from the coordinator."""
+        device = self.coordinator.device
+        dev_info = getattr(device, "device_info", None)
+
+        device_name = (
+            getattr(device, "name", None)
+            or (getattr(dev_info, "name", None) if dev_info is not None else None)
+            or getattr(device, "long_id", None)
+            or (getattr(dev_info, "long_id", None) if dev_info is not None else None)
+            or "Aquarea heat pump"
+        )
         _LOGGER.debug(
             "Updating sensor '%s' of %s",
             self.unique_id,
-            self.coordinator.device.name,
+            device_name,
         )
 
         # we need to check the value for the current hour. If the device returns None means that we don't have yet data for the current hour. However the device might still update the previous hour data.
